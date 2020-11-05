@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
+import DayPicker, { DayModifiers } from 'react-day-picker';
+import 'react-day-picker/lib/style.css';
 import { FiClock, FiPower } from 'react-icons/fi';
 
 import { useAuth } from '../../hooks/auth';
@@ -13,11 +15,21 @@ import {
   Content,
   Schedule,
   NextAppointment,
+  Section,
+  Appointment,
   Calendar,
 } from './styles';
 
 const Dashboard: React.FC = () => {
+  const [selectedDate, setSelectedDate] = useState(new Date());
+
   const { signOut, user } = useAuth();
+
+  const handleDateChange = useCallback((day: Date, modifiers: DayModifiers) => {
+    if (modifiers.available) {
+      setSelectedDate(day);
+    }
+  }, []);
 
   return (
     <Container>
@@ -62,8 +74,106 @@ const Dashboard: React.FC = () => {
               </span>
             </div>
           </NextAppointment>
+
+          <Section>
+            <strong>Manhã</strong>
+
+            <Appointment>
+              <span>
+                <FiClock />
+                08:00
+              </span>
+
+              <div>
+                <img
+                  src="https://github.com/ElladanTasartir.png"
+                  alt="Erick Malta"
+                />
+
+                <strong>Erick Malta</strong>
+              </div>
+            </Appointment>
+            <Appointment>
+              <span>
+                <FiClock />
+                08:00
+              </span>
+
+              <div>
+                <img
+                  src="https://github.com/ElladanTasartir.png"
+                  alt="Erick Malta"
+                />
+
+                <strong>Erick Malta</strong>
+              </div>
+            </Appointment>
+          </Section>
+
+          <Section>
+            <strong>Tarde</strong>
+            <Appointment>
+              <span>
+                <FiClock />
+                08:00
+              </span>
+
+              <div>
+                <img
+                  src="https://github.com/ElladanTasartir.png"
+                  alt="Erick Malta"
+                />
+
+                <strong>Erick Malta</strong>
+              </div>
+            </Appointment>
+            <Appointment>
+              <span>
+                <FiClock />
+                08:00
+              </span>
+
+              <div>
+                <img
+                  src="https://github.com/ElladanTasartir.png"
+                  alt="Erick Malta"
+                />
+
+                <strong>Erick Malta</strong>
+              </div>
+            </Appointment>
+          </Section>
         </Schedule>
-        <Calendar />
+        <Calendar>
+          <DayPicker
+            weekdaysShort={['D', 'S', 'T', 'Q', 'Q', 'S', 'S']}
+            fromMonth={new Date()}
+            disabledDays={[
+              {
+                daysOfWeek: [0, 6],
+              },
+            ]}
+            modifiers={{
+              available: { daysOfWeek: [1, 2, 3, 4, 5] },
+            }}
+            onDayClick={handleDateChange}
+            selectedDays={selectedDate}
+            months={[
+              'Janeiro',
+              'Fevereiro',
+              'Março',
+              'Abril',
+              'Maio',
+              'Junho',
+              'Julho',
+              'Agosto',
+              'Setembro',
+              'Outubro',
+              'Novembro',
+              'Dezembro',
+            ]}
+          />
+        </Calendar>
       </Content>
     </Container>
   );
